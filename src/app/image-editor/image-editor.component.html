@@ -1,0 +1,37 @@
+
+<mat-sidenav-container class='app-drawer-container' fullscreen>
+    <mat-sidenav #leftsidenav class="leftnavs" mode="side">
+      <ul >
+        <li *ngFor="let leftnav of leftnavs">
+<button mat-button [class.selected]="leftnav === selectedNav"
+(click)="clickMenu(leftnav)" matTooltip="{{leftnav.tooltip}}"><mat-icon>{{leftnav.icon}}</mat-icon></button>
+        </li>
+      </ul>
+</mat-sidenav>
+<mat-sidenav #rightsidenav class="rightnavs"  position="end" mode="side">
+<ul *ngIf="selectedNav.category=='left'">
+<li *ngFor="let rightnav of rightnavs" >
+      <button mat-button *ngIf="rightnav.category==selectedNav.name"
+      (click)="addShape(rightnav.name)"  matTooltip="{{rightnav.tooltip}}"><mat-icon>{{rightnav.icon}}</mat-icon></button>
+    
+  </li>
+
+</ul>
+<ul *ngIf="selectedNav.category=='layers'">
+  <li *ngFor="let rightnav of layers" >
+        <button mat-button 
+        (click)="changeLayer(rightnav.name)"  matTooltip="{{rightnav.tooltip}}"><mat-icon>{{rightnav.icon}}</mat-icon></button>
+      
+    </li>
+  
+  </ul>
+
+</mat-sidenav>
+<mat-sidenav-content class="canvas">
+<div id="container"></div>
+</mat-sidenav-content>
+
+</mat-sidenav-container>
+   
+  
+  
