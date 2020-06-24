@@ -13,6 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { SideNavService } from './side-nav.service';
 import { KonvaModule } from "ng2-konva";
 import { ShapeService } from './shape.service';
+import { TextNodeService } from './text-node.service';
 import {MatTooltipModule} from '@angular/material/tooltip';
 //import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
@@ -40,7 +41,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   ],
   providers: [
     SideNavService,
-    ShapeService
+    ShapeService,
+    TextNodeService
   ],
   bootstrap: [AppComponent]
 })

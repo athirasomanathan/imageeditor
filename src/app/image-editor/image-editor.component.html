@@ -9,7 +9,7 @@
       </ul>
 </mat-sidenav>
 <mat-sidenav #rightsidenav class="rightnavs"  position="end" mode="side">
-<ul *ngIf="selectedNav.category=='left'">
+<ul *ngIf="selectedNav.name=='shapes'">
 <li *ngFor="let rightnav of rightnavs" >
       <button mat-button *ngIf="rightnav.category==selectedNav.name"
       (click)="addShape(rightnav.name)"  matTooltip="{{rightnav.tooltip}}"><mat-icon>{{rightnav.icon}}</mat-icon></button>
@@ -17,6 +17,14 @@
   </li>
 
 </ul>
+<ul *ngIf="selectedNav.name=='canvas'">
+  <li *ngFor="let size of layout" >
+        <button mat-button *ngIf="size.category==selectedNav.name"
+        (click)="changeLayout(size.name)"  matTooltip="{{size.tooltip}}"><mat-icon>{{size.icon}}</mat-icon></button>
+      
+    </li>
+  
+  </ul>
 <ul *ngIf="selectedNav.category=='layers'">
   <li *ngFor="let rightnav of layers" >
         <button mat-button 

@@ -6,8 +6,10 @@ import{LEFTNAVS} from '../leftnav';
 import{RIGHTNAV} from '../rightnav';
 import { MatButton } from '@angular/material/button';
 import { ShapeService } from '../shape.service';
+import { TextNodeService } from '../text-node.service';
 import Konva from 'konva';
 import{LAYERS} from '../layers';
+import{LAYOUTS} from '../layout';
 
 @Component({
   selector: 'app-image-editor',
@@ -22,6 +24,7 @@ export class ImageEditorComponent implements OnInit {
   leftnavs = LEFTNAVS;
   rightnavs = RIGHTNAV;
   layers=LAYERS;
+  layout=LAYOUTS;
   selectedNav:Navst=this.leftnavs[0];
 
   shapes: any = [];
@@ -35,6 +38,7 @@ export class ImageEditorComponent implements OnInit {
   y2:any;
   box:any;
   selected:any; 
+  prevnav:any;
   selectedButton: any = {
     'circle': false,
     'rectangle': false,
@@ -47,7 +51,7 @@ export class ImageEditorComponent implements OnInit {
   erase: boolean = false;
   
 
-  constructor(private sideNavService: SideNavService, private shapeService: ShapeService) 
+  constructor(private sideNavService: SideNavService, private shapeService: ShapeService,private textNodeService: TextNodeService) 
   { 
   }
   ngAfterViewInit(): void 
@@ -59,8 +63,13 @@ export class ImageEditorComponent implements OnInit {
   clickMenu(leftnav:Navst) 
   { 
         this.selectedNav=leftnav;
-        this.rightsidenav.open();
-       // this.opened=true;
+        if(this.selectedNav.name=='text'){
+          this.addShape('text');
+        }else{
+          this.rightsidenav.open();
+        }
+        
+        this.prevnav=this.selectedNav;
         
   }
 
@@ -114,8 +123,13 @@ export class ImageEditorComponent implements OnInit {
           this.addEllipse();
         }
         else if (type == 'text') {
-          //this.addText();
+          this.addText();
         }
+  }
+  addText() {
+    const text = this.textNodeService.textNode(this.stage, this.layer);
+    this.shapes.push(text.textNode);
+    this.transformers.push(text.tr);
   }
   addCircle() {
       const circle = this.shapeService.circle();
@@ -270,6 +284,7 @@ export class ImageEditorComponent implements OnInit {
       const component = this;
       const tr = new Konva.Transformer();
       
+      
       this.stage.on('click', function (e) {
         const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
        // const isSelected = tr.attachTo().index(e.target) >= 0;
@@ -284,6 +299,8 @@ export class ImageEditorComponent implements OnInit {
         {
           component.selected=null;
           component.node=null;
+          component.clickMenu( component.prevnav);
+          console.log(component.prevnav);
         
         }
         if (e.target._id == this.clickStartShape._id) {
@@ -293,6 +310,7 @@ export class ImageEditorComponent implements OnInit {
           tr.attachTo(e.target);
           component.transformers.push(tr);
           component.layer.draw();
+          
           component.selectedNav=component.layers[0];
             
         }
@@ -358,6 +376,39 @@ export class ImageEditorComponent implements OnInit {
       this.selected.moveDown();
 
     }
+    this.layer.draw();
+  }
+
+  changeLayout(layout:string){
+    
+       if(layout=='facebook'){
+      this.stage.width(940);
+      this.stage.height(788);
+      console.log(layout);
+      console.log(this.stage.height());
+     
+
+    }
+    if(layout=='instagram'){
+      this.stage.width(200);
+      this.stage.height(628);
+      console.log(layout);
+      console.log(this.stage.height());
+     
+
+    }
+    /* if(layer=='layerbottom'){
+      this.selected.moveToBottom();
+
+    }
+    if(layer=='layerup'){
+      this.selected.moveUp();
+
+    }
+    if(layer=='layerdown'){
+      this.selected.moveDown();
+
+    } */
     this.layer.draw();
   }
 }
